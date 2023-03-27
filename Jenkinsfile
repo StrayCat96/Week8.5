@@ -2,6 +2,16 @@ podTemplate(yaml: '''
     apiVersion: v1
     kind: Pod
     spec:
+        containers:
+      - name: gradle
+        image: gradle:6.3-jdk14
+        command:
+        - sleep
+        args:
+        - 99d
+        volumeMounts:
+        - name: shared-storage
+          mountPath: /mnt 
       containers:
       - name: cloud-sdk
         image: google/cloud-sdk
@@ -26,23 +36,27 @@ podTemplate(yaml: '''
         secret:
           secretName: sdk-key
 ''') {
-  node(POD_LABEL) {
+   {node(POD_LABEL) {
     stage('smoke test') {
-      container('cloud-sdk') {
-        stage('smoke test') {
-                    sh '''
-                    gcloud auth login --cred-file=$GOOGLE_APPLICATION_CREDENTIALS
-                    gcloud container clusters get-credentials hello-cluster --region us-east1 --project week9project-381822
-                    git clone 'https://github.com/StrayCat96/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition'
-                    cd Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition/Chapter09/sample3
-                    chmod +x gradlew
-                    ./gradlew smoke-test.sh -Dcalculator.url=http://calculator-service.devops-tools.svc.cluster.local:8080
-                    '''
+      git 'https://github.com/StrayCat96/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
+      container('gradle') {
+        stage('Build a gradle project') {
+          sh '''
+          cd /home/jenkins/agent/workspace/Chapter08/sample1
+          chmod +x gradlew
+          ./gradlew build
+          mv ./build/libs/calculator-0.0.1-SNAPSHOT.jar /mnt
+          ./gradlew smokeTest -Dcalculator.url=http://calculator-service.devops-tools.svc.cluster.local:8080
+          
+          '''
         }
-        stage('Deploy to staging') {
-                    sh '''
-                    kubectl apply -f hazelcast.yaml -n devops-tools
-                    kubectl apply -f calculator.yaml -n devops-tools
+      }
+    }
+    stage('Deploying to prod') {
+      container('cloud-sdk') {
+        stage('Deploy calculator') {
+          sh "kubectl apply -f hazelcast.yaml -n devops-tools"
+          sh "kubectl apply -f calculator.yaml -n devops-tools"
                     '''
                }
           }
