@@ -57,7 +57,6 @@ podTemplate(yaml: '''
         stage('Deploy calculator') {
           sh "kubectl apply -f hazelcast.yaml -n devops-tools"
           sh "kubectl apply -f calculator.yaml -n devops-tools"
-                    '''
                }
           }
       }
