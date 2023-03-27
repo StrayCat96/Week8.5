@@ -38,7 +38,9 @@ podTemplate(yaml: '''
                     chmod +x gradlew
                     + ./gradlew smokeTest -Dcalculator.url=http://calculator-service.devops-tools.svc.cluster.local:8080
                     '''
-      stage('Deploy to staging') {
+            }
+        }
+        stage('Deploy to staging') {
                steps {
                     sh "kubectl apply -f hazelcast.yaml -n devops-tools"
                     sh "kubectl apply -f calculator.yaml -n devops-tools"
@@ -48,5 +50,3 @@ podTemplate(yaml: '''
      }
     }
    }
- }
-}
