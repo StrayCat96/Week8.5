@@ -36,7 +36,7 @@ podTemplate(yaml: '''
                     git clone 'https://github.com/StrayCat96/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition'
                     cd Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition/Chapter08/sample1
                     chmod +x gradlew
-                    chmod +x smoke-test.sh && ./smoke-test.sh"
+                    chmod +x smoke-test.sh && ./smoke-test.sh
                     '''
         }
         stage('Deploy to staging') {
