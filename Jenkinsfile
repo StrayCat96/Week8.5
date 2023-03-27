@@ -2,7 +2,7 @@ podTemplate(yaml: '''
     apiVersion: v1
     kind: Pod
     spec:
-        containers:
+      containers:
       - name: gradle
         image: gradle:6.3-jdk14
         command:
@@ -12,7 +12,6 @@ podTemplate(yaml: '''
         volumeMounts:
         - name: shared-storage
           mountPath: /mnt 
-      containers:
       - name: cloud-sdk
         image: google/cloud-sdk
         command:
