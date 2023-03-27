@@ -33,7 +33,7 @@ podTemplate(yaml: '''
                     sh '''
                     gcloud auth login --cred-file=$GOOGLE_APPLICATION_CREDENTIALS
                     gcloud container clusters get-credentials hello-cluster --region us-east1 --project week9project-381822
-                    git 'https://github.com/StrayCat96/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition'
+                    git clone 'https://github.com/StrayCat96/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition'
                     cd Chapter 08/sample1
                     chmod +x gradlew
                     + ./gradlew smokeTest -Dcalculator.url=http://calculator-service.devops-tools.svc.cluster.local:8080
