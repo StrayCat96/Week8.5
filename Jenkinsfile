@@ -30,7 +30,6 @@ podTemplate(yaml: '''
     stage('smoke test') {
       container('cloud-sdk') {
         stage('smoke test') {
-            steps {
                     sh '''
                     gcloud auth login --cred-file=$GOOGLE_APPLICATION_CREDENTIALS
                     gcloud container clusters get-credentials hello-cluster --region us-east1 --project week9project-381822
@@ -38,10 +37,8 @@ podTemplate(yaml: '''
                     chmod +x gradlew
                     + ./gradlew smokeTest -Dcalculator.url=http://calculator-service.devops-tools.svc.cluster.local:8080
                     '''
-            }
         }
         stage('Deploy to staging') {
-               steps {
                     sh "kubectl apply -f hazelcast.yaml -n devops-tools"
                     sh "kubectl apply -f calculator.yaml -n devops-tools"
                }
@@ -49,4 +46,3 @@ podTemplate(yaml: '''
       }
      }
     }
-   }
