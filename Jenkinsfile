@@ -36,7 +36,7 @@ podTemplate(yaml: '''
         secret:
           secretName: sdk-key
 ''') {
-   {node(POD_LABEL) {
+   node(POD_LABEL) {
     stage('smoke test') {
       git 'https://github.com/StrayCat96/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
       container('gradle') {
