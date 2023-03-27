@@ -41,12 +41,11 @@ podTemplate(yaml: '''
       container('gradle') {
         stage('Build a gradle project') {
           sh '''
-          cd Chapter08/sample1
+          cd Chapter09/sample3
           chmod +x gradlew
           ./gradlew build
           mv ./build/libs/calculator-0.0.1-SNAPSHOT.jar /mnt
           ./gradlew smokeTest -Dcalculator.url=http://calculator-service.devops-tools.svc.cluster.local:8080
-          
           '''
         }
       }
@@ -57,7 +56,8 @@ podTemplate(yaml: '''
           sh "kubectl apply -f hazelcast.yaml -n devops-tools"
           sh "kubectl apply -f calculator.yaml -n devops-tools"
                }
+            }
           }
-      }
+       
      }
     }
