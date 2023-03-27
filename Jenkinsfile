@@ -16,7 +16,7 @@ podTemplate(yaml: '''
           mountPath: /var/secrets/google
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: week9project-381822-b2929df8ca6e.json
+          value: /var/secrets/google/week9project-381822-b2929df8ca6e.json
       restartPolicy: Never
       volumes:
       - name: shared-storage
